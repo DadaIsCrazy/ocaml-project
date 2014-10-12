@@ -25,6 +25,45 @@ let exemple =
 	Note (55, 64, 1000) ]];;
 
 
+
+let rec print_tab x =
+  match x with
+    | 0 -> ()
+    | n -> (print_string "\t";
+	    print_tab (x - 1));;
+
+let affichage objet =
+  let rec loop obj tab =
+    match obj with
+      | Note (hauteur, volume, duree) -> (print_tab tab;
+					  print_string "Note (" ;
+					  print_int hauteur;
+					  print_string ", ";
+					  print_int volume;
+					  print_string ", ";
+					  print_int duree;
+					  print_string ")")
+      | Silence duree -> (print_tab tab;
+			  print_string "Silence ";
+			  print_int duree)
+      | Sequence seq -> (print_tab tab;
+			 print_string "Sequence";
+			 print_string "[\n";
+			 (List.map (fun x -> (loop x (tab + 1);
+					      print_string ";\n")) seq);
+			 print_tab (1 + tab);
+			 print_string "]" )
+      | Parallel seq -> (print_tab tab;
+			 print_string "Parallel";
+			 print_string "[\n";
+			 (List.map (fun x -> (loop x (tab + 1);
+					      print_string ";\n")) seq);
+			 print_tab (tab + 1);
+			 print_string "]" ) 
+  in loop objet 0;
+  print_string "\n";;
+
+
 let rec duration obj =
   match obj with 
   | Note (_, _, duree) -> duree
@@ -95,13 +134,20 @@ let rec miroir obj note =
   | Parallel seq -> Parallel (List.map (fun x -> miroir x note) seq) ;;
 
 
-let palindrome ( obj: objet_musical ) =
+
+let rec reverse obj =
+  match obj with 
+    | Note x -> Note x
+    | Silence x -> Silence x
+    | Sequence x -> Sequence (List.rev (List.map reverse x))
+    | Parallel x -> Parallel (List.rev (List.map reverse x))
+
+let rec palindrome ( obj: objet_musical ) =
   match obj with
     | Note x -> Sequence [(Note x); (Note x)]
     | Silence x -> Sequence [(Silence x); (Silence x)]
-    | Sequence x -> Sequence [(Sequence x); (Sequence (List.rev  x))]
-    | Parallel x -> Sequence [(Parallel x); (Parallel x)];;
-
+    | Sequence x -> Sequence [(Sequence x); reverse (Sequence x)]
+    | Parallel x -> Sequence [ Parallel x; reverse (Parallel x)];;
 
 let chordify note liste_obj =
   match note with

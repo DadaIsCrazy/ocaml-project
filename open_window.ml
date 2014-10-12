@@ -56,4 +56,4 @@ let start_and_stop () =
   done; 
   Graphics.close_graph ();;
     
-(*  start_and_stop (); *)
+start_and_stop ();;
