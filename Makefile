@@ -1,4 +1,4 @@
-SOURCES = midi.ml musical_transformations.ml open_window.ml #export_and_listen.ml
+SOURCES = midi.ml musical_transformations.ml open_window.ml to_midi.ml
 OBJECTS = $(SOURCES:%.ml=%.cmo)
 FINAL = $(SOURCES:%.ml=%.cmi)
 GRAPH_FLAGS = graphics.cma
