@@ -22,8 +22,6 @@ let exemple =
 	Note (55, 64, 1000) ;
 	Note (55, 64, 1000) ]];;
 
-
-
 let rec print_tab x =
   match x with
     | 0 -> ()

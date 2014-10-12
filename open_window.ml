@@ -1,4 +1,5 @@
 open Musical_transformations;;
+open Harmonisation;;
 
 type basic_color =
   | Black | White | Red | Green | Blue | Yellow | Cyan | Magenta;;
@@ -60,4 +61,6 @@ let start_and_stop morceau =
   done; 
   Graphics.close_graph ();;
     
-(* start_and_stop exemple;; *)
+  start_and_stop exemple;;
+    start_and_stop (harmonizeChords exemple 4 60 [24 ; 56 ; -23 ]);;
+          start_and_stop (harmonizeSequence exemple 4 60 5 [24 ; 56 ; -23 ]);;
