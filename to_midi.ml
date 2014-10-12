@@ -21,4 +21,4 @@ let creer_midi obj file =
   in
   write (0, (main_fun obj 0)) file;;
 
-  creer_midi exemple exemple.mid
+  creer_midi exemple exemple.mid;;

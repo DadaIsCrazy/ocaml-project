@@ -99,9 +99,9 @@ let beats obj tempo =
   (duration obj) / 1000 * (tempo / 60);;
 
 (* Renvoies les notes de obj situées tous les n temps. *)
-let beatsList obj n tempo=
+let beatsList obj n tempo =
   let tmp = ref 0 in
-  let rec loop obj n tempo=
+  let rec loop obj n tempo =
     match obj with
     | Note (hauteur, volume, duree) -> (tmp := !tmp + duree;
       (if ((!tmp - duree) / 1000 * (tempo / 60)) mod n = 0 then Note (hauteur, volume, duree) else Silence 0))
