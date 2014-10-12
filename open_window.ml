@@ -2,9 +2,9 @@ open Musical_transformations;;
 
 type basic_color =
   | Black | White | Red | Green | Blue | Yellow | Cyan | Magenta;;
-     
-let actual_color = ref Black;;
 
+(* Permet de changer la couleur d'affichage. *)
+let actual_color = ref Black;;
 let new_color () =
   match !actual_color with
   | Black   -> actual_color := Red;     Graphics.black
@@ -15,18 +15,20 @@ let new_color () =
   | Yellow  -> actual_color := Cyan;    Graphics.yellow
   | Cyan    -> actual_color := Magenta; Graphics.cyan
   | Magenta -> actual_color := Black;   Graphics.magenta;;
-  
+
+(* Ouvre une fenêtre et la met à une taille correcte. *)
 let init_window title =
   Graphics.open_graph " 1000x256";
   Graphics.set_window_title title;
   Graphics.set_color Graphics.black;
-  let rec loop x =
+  (* let rec loop x =
     if x < 400 then
        (Graphics.moveto x 100;
        Graphics.draw_string (string_of_int (x * 10));
        loop (x + 100)) in
-  loop 100;;
+  loop 100 *);;
 
+(* Affiche une chanson MIDI dans le formalisme Piano Roll, dans la fenêtre créée. *)
 let draw_music music =
   Graphics.clear_graph ();
   let start = ref 0 in
@@ -43,17 +45,19 @@ let draw_music music =
 		      List.map loop seq;
 		      start := tmp in
   loop music;;
-     
+
+(* Attends la pression de la touche q pour quitter. *)
 let continue () =
   let ev = Graphics.wait_next_event [Graphics.Key_pressed] in
   ev.Graphics.key <> 'q';;
 
-let start_and_stop () =
+(* Lance l'ouverture de la fenêtre et écrit le morceau en Piano Roll. *)
+let start_and_stop morceau =
   init_window "Piano Roll";
-  draw_music exemple;
+  draw_music morceau;
   while continue () do
     ()
   done; 
   Graphics.close_graph ();;
     
-start_and_stop ();;
+(* start_and_stop exemple;; *)
